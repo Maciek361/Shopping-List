@@ -5,8 +5,8 @@ use App\Http\Controllers\ProductController;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Resources\ProductResource;
-use App\Models\Products;
-
+use App\Models\Product;
+use App\Http\Controllers\ShoppingListController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,7 +21,17 @@ use App\Models\Products;
 // Route::get('/products/', function () {
 //     return ProductResource::collection(Products::all());
 // });
-Route::apiResource('products', ProductController::class);
+
+
+
+Route::resource('product', ProductController::class);
+Route::resource('shopping-list', ShoppingListController::class);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
+  
+// Route::resource('shopping-lists', ShoppingListController::class);
+    
 });

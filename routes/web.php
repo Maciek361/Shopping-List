@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::resource('products', ProductController::class); //dodaj except lub only jak chcesz wyeliminować któreś routery
+// Route::resource('products', ProductController::class);
 // Route::get('/products', [ProductController::class, 'index']);
 Route::get('/', function () {
     return view('welcome');
