@@ -25,8 +25,7 @@ use App\Http\Controllers\ShoppingListController;
 
 
 Route::resource('product', ProductController::class);
-Route::resource('shopping-list', ShoppingListController::class);
-
+Route::resource('shopping-lists', ShoppingListController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

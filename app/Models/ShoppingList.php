@@ -9,19 +9,13 @@ class ShoppingList extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'created_by', 'updated_by'];
-
-    public function products()
+    protected $fillable = [
+        'name',
+    
+    ];
+    public function users()
     {
-        return $this->belongsToMany(Product::class, 'list_product') ->withPivot('quantity', 'user_id');
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsToMany(User::class, 'shopping_list_user', 'shopping_list_id', 'user_id')->withTimestamps();
+    
     }
 }

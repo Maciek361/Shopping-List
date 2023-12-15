@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -41,4 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function shoppingLists()
+    {
+        return $this->belongsToMany(ShoppingList::class, 'shopping_list_user', 'user_id', 'shopping_list_id')->withTimestamps();
+    }
 }

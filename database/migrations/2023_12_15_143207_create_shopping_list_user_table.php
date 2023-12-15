@@ -13,17 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('list_product', function (Blueprint $table) {
+        Schema::create('shopping_list_user', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('shopping_list_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('user_id')->nullable();; // Kto dodał produkt do listy
-            $table->integer('quantity')->default(1);
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('shopping_list_id')->references('id')->on('shopping_lists')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+
+            // Dodatkowe kolumny według potrzeb
         });
     }
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('list_product');
+        Schema::dropIfExists('shopping_list_user');
     }
 };

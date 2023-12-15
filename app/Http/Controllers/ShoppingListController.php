@@ -2,30 +2,26 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Controllers\Controller;
+use App\Models\ShoppingList;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Dodaj import dla klasy Auth
-use App\Models\ShoppingList; // Dodaj import dla modelu ShoppingList
-use App\Models\Product; // Dodaj import dla modelu Product
+use Illuminate\Http\JsonResponse;
 
 class ShoppingListController extends Controller
 {
-
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        // $user = Auth::user();
-        $shoppingLists = ShoppingList::all();
+        $shoppingLists = ShoppingList::when($request->input('user_id'), function ($query) use ($request) {
+            return $query->where('user_id', $request->input('user_id'));
+        })->with('user')->get();
 
         return response()->json($shoppingLists);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        // $user = Auth::user();
-        $shoppingList = ShoppingList::findOrFail($id);
-
+        $shoppingList = ShoppingList::with('user')->findOrFail($id);
         return response()->json($shoppingList);
     }
-
-
- 
 }
