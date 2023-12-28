@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class ShoppingFactory extends Factory
      */
     public function definition()
     {
+        $users = User::all();
+
         return [
             'name' => 'lista_' . fake()->word(),
+            'user_id' => $users->random()->id,
         ];
     }
 }

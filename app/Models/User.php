@@ -43,8 +43,8 @@ class User extends Authenticatable
     ];
 
 
-    public function shoppingLists()
+    public function shoppings()
     {
-        return $this->belongsToMany(ShoppingList::class, 'shopping_list_user', 'user_id', 'shopping_list_id')->withTimestamps();
+        return $this->belongsToMany(Shopping::class)->withTimestamps();
     }
 }
