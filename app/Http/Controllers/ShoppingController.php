@@ -14,6 +14,6 @@ class ShoppingController extends Controller
 
     public function show(string $id)
     {
-        return response()->json(Shopping::find($id));
+        return response()->json(Shopping::with(['users', 'products'])->find($id));
     }
 }

@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'category_name' => 'tabela_kategoria_'.fake()->word()
+            'category_name' => 'kategoria_' . fake()->word()
         ];
     }
 }

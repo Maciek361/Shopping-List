@@ -13,6 +13,6 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        return response()->json(User::find($id)->with('shoppings')->get());
+        return response()->json(User::with('shoppings')->find($id));
     }
 }
