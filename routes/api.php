@@ -2,11 +2,8 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\ShoppingController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\ProductResource;
-use App\Models\Product;
-use App\Http\Controllers\ShoppingListController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,12 +22,12 @@ use App\Http\Controllers\ShoppingListController;
 
 
 Route::resource('product', ProductController::class);
-Route::resource('shopping-lists', ShoppingListController::class);
+Route::resource('shopping', ShoppingController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
-  
-// Route::resource('shopping-lists', ShoppingListController::class);
-    
+
+    // Route::resource('shopping-lists', ShoppingListController::class);
+
 });
