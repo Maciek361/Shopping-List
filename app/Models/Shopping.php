@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shopping extends Model
 {
     use HasFactory;
-
+    protected $fillable = ['name', 'user_id'];
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();

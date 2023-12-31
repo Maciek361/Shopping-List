@@ -26,6 +26,8 @@ Route::resource('product', ProductController::class);
 Route::resource('shopping', ShoppingController::class);
 Route::resource('user', UserController::class);
 
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
