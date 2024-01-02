@@ -33,6 +33,7 @@ class ShoppingController extends Controller
         $shopping->users()->attach($request->input('user_id'));
         return response()->json(($shopping), 201);
     }
+
     public function update(Request $request, $id)
     {
         $shopping = Shopping::findOrFail($id);
@@ -50,6 +51,7 @@ class ShoppingController extends Controller
 
         return response()->json(($shopping), 200);
     }
+
     public function destroy($id)
     {
         $shopping = Shopping::findOrFail($id);
@@ -60,13 +62,19 @@ class ShoppingController extends Controller
         return response()->json(['message' => 'Lista została usunięta'], 200);
     }
 
-public function detachProduct($listId, $productId)
-{
-    $shopping = Shopping::findOrFail($listId);
+    public function detachProduct($listId, $productId)
+    {
+        $shopping = Shopping::findOrFail($listId);
+        $shopping->products()->detach($productId);
 
-    
-    $shopping->products()->detach($productId);
+        return response()->json(['message' => 'Produkt został odłączony z listy'], 200);
+    }
 
-    return response()->json(['message' => 'Produkt został odłączony z listy'], 200);
-}
+    public function attachProduct($shoppingId, $productId)
+    {
+        $shopping = Shopping::findOrFail($shoppingId);
+        $shopping->products()->attach($productId);
+
+        return response()->json(['message' => 'Produkt został dodany do listy'], 200);
+    }
 }

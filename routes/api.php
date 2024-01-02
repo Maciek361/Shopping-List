@@ -27,7 +27,7 @@ Route::resource('shopping', ShoppingController::class);
 Route::resource('user', UserController::class);
 
 Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
-
+Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
