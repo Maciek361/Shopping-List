@@ -98,4 +98,21 @@ class ShoppingController extends Controller
 
         return response()->json($shopping, 200);
     }
+    public function updateChecked(Request $request, $shoppingId, $productId)
+    {
+        $shopping = Shopping::findOrFail($shoppingId);
+        $checked = $request->input('checked');
+
+        if (!$shopping) {
+            return response()->json(['message' => 'Nie odnaleziono listy o podanym ID'], 400);
+        }
+
+        $updatedRows = DB::table('product_shopping')->where('shopping_id', $shoppingId)->where('product_id', $productId)->update(['checked' => $checked]);
+
+        if ($updatedRows == 0) {
+            return response()->json(['message' => 'Operacja nie powiodła się'], 400);
+        }
+
+        return response()->json($shopping, 200);
+    }
 }

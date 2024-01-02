@@ -17,6 +17,7 @@ class QuantityResource extends JsonResource
         return [
             'product_id' => $this->product_id,
             'quantity' => $this->quantity,
+            'checked' => $this->checked,
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('shopping_id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('quantity')->default(0);
+            $table->boolean('checked')->default(false);
             $table->timestamps();
 
             $table->foreign('shopping_id')->references('id')->on('shoppings');
