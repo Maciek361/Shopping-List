@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ShoppingResource;
 use App\Models\Shopping;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShoppingController extends Controller
 {
@@ -14,7 +16,9 @@ class ShoppingController extends Controller
 
     public function show(string $id)
     {
-        return response()->json(Shopping::with(['users', 'products'])->find($id));
+        $shopping = Shopping::with(['users', 'products'])->find($id);
+
+        return response()->json(new ShoppingResource($shopping));
     }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
@@ -23,12 +27,12 @@ class ShoppingController extends Controller
             'name' => 'required|string',
             'user_id' => 'required|exists:users,id',
         ]);
-    
+
         $shopping = new Shopping([
             'name' => $request->input('name'),
             'user_id' => $request->input('user_id'), //user ma byc brany z zalogowanego użytkownika (jak będzie passport)
         ]);
-    
+
         $shopping->save();
         $shopping->users()->attach($request->input('user_id'));
         return response()->json(($shopping), 201);
@@ -41,12 +45,12 @@ class ShoppingController extends Controller
         $request->validate([
             'name' => 'required|string',
 
-       
+
         ]);
         $shopping->update([
             'name' => $request->input('name'),
             'user_id' => $request->input('user_id'),
-          
+
         ]);
 
         return response()->json(($shopping), 200);
@@ -76,5 +80,22 @@ class ShoppingController extends Controller
         $shopping->products()->attach($productId);
 
         return response()->json(['message' => 'Produkt został dodany do listy'], 200);
+    }
+    public function updateQuantity(Request $request, $shoppingId, $productId)
+    {
+        $shopping = Shopping::findOrFail($shoppingId);
+        $quantity = $request->input('quantity');
+
+        if (!$shopping) {
+            return response()->json(['message' => 'Nie odnaleziono listy o podanym ID'], 400);
+        }
+
+        $updatedRows = DB::table('product_shopping')->where('shopping_id', $shoppingId)->where('product_id', $productId)->update(['quantity' => $quantity]);
+
+        if ($updatedRows == 0) {
+            return response()->json(['message' => 'Operacja nie powiodła się'], 400);
+        }
+
+        return response()->json($shopping, 200);
     }
 }

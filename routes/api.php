@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +29,7 @@ Route::resource('user', UserController::class);
 
 Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
 Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
+Route::post('/shopping/{shopping}/products/{product}/update-quantity', [ShoppingController::class, 'updateQuantity']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
