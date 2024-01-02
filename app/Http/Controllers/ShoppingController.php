@@ -50,4 +50,23 @@ class ShoppingController extends Controller
 
         return response()->json(($shopping), 200);
     }
+    public function destroy($id)
+    {
+        $shopping = Shopping::findOrFail($id);
+        $shopping->users()->detach();
+        $shopping->products()->detach($id);
+        $shopping->delete();
+
+        return response()->json(['message' => 'Lista została usunięta'], 200);
+    }
+
+public function detachProduct($listId, $productId)
+{
+    $shopping = Shopping::findOrFail($listId);
+
+    
+    $shopping->products()->detach($productId);
+
+    return response()->json(['message' => 'Produkt został odłączony z listy'], 200);
+}
 }
