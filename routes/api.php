@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShoppingController;
 use App\Http\Controllers\UserController;
@@ -22,19 +23,35 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
+//Public Routes
+// Route::resource('product', ProductController::class); //w tym dodawanie produktów
+// Route::resource('shopping', ShoppingController::class); //dodawanie list 
+// Route::resource('user', UserController::class); // w tym wyświetlanie użytkowników
+Route::post('/register/', [AuthController::class, 'register']);
+Route::post('/login/', [AuthController::class, 'login']);
 
-Route::resource('product', ProductController::class);
-Route::resource('shopping', ShoppingController::class);
-Route::resource('user', UserController::class);
+// Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
+// Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
+// Route::post('/shopping/{shopping}/products/{product}/update-quantity', [ShoppingController::class, 'updateQuantity']);
+// Route::post('/shopping/{shopping}/products/{product}/update-checked', [ShoppingController::class, 'updatechecked']);
 
-Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
-Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
-Route::post('/shopping/{shopping}/products/{product}/update-quantity', [ShoppingController::class, 'updateQuantity']);
-Route::post('/shopping/{shopping}/products/{product}/update-checked', [ShoppingController::class, 'updatechecked']);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+//Protected Routes
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
+    Route::resource('product', ProductController::class); //w tym dodawanie produktów
+    Route::resource('shopping', ShoppingController::class); //dodawanie list i usuwanie
+    Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
+    Route::post('/shopping/{shopping}/products/{product}/update-quantity', [ShoppingController::class, 'updateQuantity']);
+    Route::post('/shopping/{shopping}/products/{product}/update-checked', [ShoppingController::class, 'updatechecked']);
+    Route::post('/logout/', [AuthController::class, 'logout']);
+    Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
 
-    // Route::resource('shopping-lists', ShoppingListController::class);
 
 });
+
+// Route::middleware('auth:sanctum')->get('/user', function () {
+
+
+//     Route::get('/products/search/{name}', [ProductController::class, 'search']);
+
+// });
