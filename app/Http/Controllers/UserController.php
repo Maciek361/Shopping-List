@@ -15,4 +15,6 @@ class UserController extends Controller
     {
         return response()->json(User::with('shoppings')->find($id));
     }
+
+
 }

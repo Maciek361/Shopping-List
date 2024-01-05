@@ -16,25 +16,33 @@ class ShoppingController extends Controller
 
     public function show(string $id)
     {
+        $user = auth()->user();
         $shopping = Shopping::with(['users', 'products'])->find($id);
+
+        if ($user->id != $shopping->user_id) {
+            //TODO - show ma pokazywać tez contributora
+            return response()->json(['message' => 'user is not a creator of a list'], 403);
+        }
 
         return response()->json(new ShoppingResource($shopping));
     }
 
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
+        $userId = auth()->user()->id; //wyciaganie aktualnie zalogowanego uzytkownika
+
         $request->validate([
             'name' => 'required|string',
-            'user_id' => 'required|exists:users,id',
         ]);
 
         $shopping = new Shopping([
             'name' => $request->input('name'),
-            'user_id' => $request->input('user_id'), //user ma byc brany z zalogowanego użytkownika (jak będzie passport)
+            'user_id' => $userId,
+
         ]);
 
         $shopping->save();
-        $shopping->users()->attach($request->input('user_id'));
+        $shopping->users()->attach($userId);
         return response()->json(($shopping), 201);
     }
 
