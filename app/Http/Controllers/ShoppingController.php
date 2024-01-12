@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ShoppingResource;
 use App\Models\Shopping;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,9 +20,10 @@ class ShoppingController extends Controller
         $user = auth()->user();
         $shopping = Shopping::with(['users', 'products'])->find($id);
 
-        if ($user->id != $shopping->user_id) {
-            //TODO - show ma pokazywać tez contributora
-            return response()->json(['message' => 'user is not a creator of a list'], 403);
+        $isContributor = $shopping->users->contains(User::find($user->id));
+
+        if ($user->id != $shopping->user_id || !$isContributor) {
+            return response()->json(['message' => 'user is not a creator nor contributor of a list'], 403);
         }
 
         return response()->json(new ShoppingResource($shopping));
