@@ -23,7 +23,7 @@ class ShoppingController extends Controller
 
         $isContributor = $shopping->users->contains(User::find($user->id));
 
-        if ($user->id != $shopping->user_id || !$isContributor) {
+        if (!$isContributor) {
             return response()->json(['message' => 'user is not a creator nor contributor of a list'], 403);
         }
 
@@ -130,5 +130,30 @@ class ShoppingController extends Controller
         }
 
         return response()->json($shopping, 200);
+    }
+    public function updateShared(Request $request, string $listId)
+    {
+        $shopping = Shopping::findOrFail($listId);
+        $userToShareEmail = $request->input('email');
+
+        if (!$shopping) {
+            return response()->json(['message' => 'Lista o podanym id nie istnieje'], 404);
+        }
+
+        $user = User::where('email', '=', $userToShareEmail)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User o podanym id nie istnieje'], 404);
+        }
+
+        $isContributor = $shopping->users->contains(User::find($user->id));
+
+        if ($isContributor) {
+            return response()->json(['message' => 'User jest kontrybutorem tej listy'], 4);
+        }
+
+        $shopping->users()->attach($user->id);
+
+        return response()->json(['message' => 'User dolacza do listy'], 200);
     }
 }

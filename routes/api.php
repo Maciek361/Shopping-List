@@ -38,5 +38,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/shopping/{shopping}/products/{product}/update-checked', [ShoppingController::class, 'updatechecked']);
     Route::delete('shopping/{shopping}/products/{product}', [ShoppingController::class, 'detachProduct'])->name('shopping.detachProduct');
     Route::resource('user.shoppings', UserShoppingsController::class); // w tym wyświetlanie użytkowników - user/2/shoppings
+    Route::post('/shopping/{shopping}/share', [ShoppingController::class, 'updateShared']);
     Route::post('/logout/', [AuthController::class, 'logout']);
 });
