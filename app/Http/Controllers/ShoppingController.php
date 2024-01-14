@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ShoppingResource;
 use App\Models\Shopping;
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -87,6 +88,11 @@ class ShoppingController extends Controller
     public function attachProduct($shoppingId, $productId)
     {
         $shopping = Shopping::findOrFail($shoppingId);
+
+        if ($shopping->products->contains(Product::find($productId))) {
+            return response()->json(['message' => 'Produkt juz znajduje sie ne liscie'], 422);
+        }
+
         $shopping->products()->attach($productId);
 
         return response()->json(['message' => 'Produkt został dodany do listy'], 200);
