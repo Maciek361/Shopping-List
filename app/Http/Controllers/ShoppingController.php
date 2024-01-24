@@ -143,17 +143,17 @@ class ShoppingController extends Controller
         $user = User::where('email', '=', $userToShareEmail)->first();
 
         if (!$user) {
-            return response()->json(['message' => 'User o podanym id nie istnieje!'], 404);
+            return response()->json(['message' => 'Użytkownik o podanym emailu nie istnieje!'], 404);
         }
 
         $isContributor = $shopping->users->contains(User::find($user->id));
 
         if ($isContributor) {
-            return response()->json(['message' => 'User jest kontrybutorem tej listy!'], 400);
+            return response()->json(['message' => 'Użytkownik jest już przypisany do tej listy!'], 400);
         }
 
         $shopping->users()->attach($user->id);
 
-        return response()->json(['message' => 'User dolacza do listy!'], 200);
+        return response()->json(['message' => 'Lista została udostępniona użytkownikowi!'], 200);
     }
 }

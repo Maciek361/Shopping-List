@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShoppingController;
 use App\Http\Controllers\UserShoppingsController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,7 @@ Route::post('/login/', [AuthController::class, 'login']);
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('product', ProductController::class); //w tym dodawanie produktów do bazy
+    Route::resource('category', CategoryController::class); //w tym dodawanie kategori do bazy
     Route::resource('shopping', ShoppingController::class); //dodawanie list i usuwanie - funkcja dla admina 
     Route::resource('user', UserController::class); // w tym wyświetlanie użytkowników
     Route::post('/shopping/{shopping}/products/{product}', [ShoppingController::class, 'attachProduct'])->name('shopping.attachProduct');
